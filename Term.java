@@ -1,9 +1,12 @@
 import java.util.*;
 //Import other classes - Variable
 
+interface Expression
+{
 
+}
 // Term can be atom or compund terms.
-public class Term{
+public class Term implements Expression{
 
     String functor;
     List<Term> arguments;
@@ -13,8 +16,8 @@ public class Term{
         this.arguments = arguments;
     }
 
-    public match_variable_bindings(Term new_term)
-    {
+    // public match_variable_bindings(Term new_term)
+    // {
 
-    }
+    // }
 }
