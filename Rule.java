@@ -1,17 +1,17 @@
-import java.util.*;
 
 public class Rule{
     
-    """Rules are used to define relationships between facts and other rules.They
-    allow us to make conditional statements about our world."""
-    Term head;
-    Term tail;
-    public Rule(Term head, Term tail)
+    // Rules are used to define relationships between facts and other rules.They
+    // allow us to make conditional statements about our world.
+    Expression head;
+    Expression tail;
+    public Rule(Expression head, Expression tail)
     {
         this.head = head;
         this.tail = tail;
     }
-    public toString()
+    @Override
+    public String toString()
     {
         return this.head.toString() + " :- " + this.tail.toString();
     }   

@@ -10,7 +10,38 @@ public class Conjunction extends Term
 
     }
 
-    // public query(Database )
+    @Override
+    public Expression substitute_variable_bindings(Hashtable<Variable,Expression> bindings)
+    {
+        List<Expression> arguments = new ArrayList<Expression>();
+        
+        for(Expression argument : this.arguments)
+        {
+            arguments.add(argument.substitute_variable_bindings(bindings));
+
+        }
+        return new Conjunction(this.functor,arguments);
+
+
+    }
+
+    public String toString()
+    {
+        
+        return 
+    }   
+
+    
+    
+    // public query(Database database)
+    // {
+
+
+
+
+
+
+    // }
 
 
 
