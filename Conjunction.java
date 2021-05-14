@@ -27,8 +27,21 @@ public class Conjunction extends Term
 
     public String toString()
     {
-        
-        return 
+        String conjunction="[";
+        int n=this.arguments.size();
+
+        for(int i=0;i<n;i++)
+        {
+            conjunction+=this.arguments.get(i).toString();
+            if(i!=n-1)
+            {
+                conjunction+=",";
+            }
+            
+        }
+        conjunction+="]";
+
+        return conjunction;
     }   
 
     
