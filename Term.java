@@ -9,8 +9,8 @@ interface Expression
 public class Term implements Expression{
 
     String functor;
-    List<Term> arguments;
-    public Term(String functor, List<Term> arguments)
+    List<Expression> arguments;
+    public Term(String functor, List<Expression> arguments)
     {
         this.functor = functor;
         this.arguments = arguments;
