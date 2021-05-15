@@ -4,7 +4,6 @@ import java.util.*;
 interface Expression
 {
     public Expression substitute_variable_bindings( Hashtable<Variable,Expression> bindings);
-
 }
 // Term can be atom or compund terms.
 public class Term implements Expression
