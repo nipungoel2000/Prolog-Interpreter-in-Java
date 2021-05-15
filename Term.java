@@ -7,8 +7,8 @@ interface Expression
 
 }
 // Term can be atom or compund terms.
-public class Term implements Expression{
-
+public class Term implements Expression
+{
     String functor;
     List<Expression> arguments = new ArrayList<Expression>();
     public Term(String functor, List<Expression> arguments)
@@ -16,7 +16,6 @@ public class Term implements Expression{
         this.functor = functor;
         this.arguments = arguments;
     }
-
     @Override
     public Expression substitute_variable_bindings( Hashtable<Variable,Expression> bindings)
     {
