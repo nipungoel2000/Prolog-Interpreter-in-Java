@@ -1,4 +1,3 @@
-import java.util.*;
 //Import other classes - Variable
 
 public class Variable implements Expression
@@ -8,5 +7,11 @@ public class Variable implements Expression
     public Variable(String var)
     {
         this.var=var;
+    }
+    @Override
+    public String toString()
+    {
+        return this.var; 
+        
     }
 }

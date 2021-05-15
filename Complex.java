@@ -13,4 +13,17 @@ public class Complex implements Expression
         this.args=new ArrayList<Expression>(args);
         this.arity=this.args.size();
     }
+    public String toString()
+    {
+        String s = functor + "(";
+        int n = this.args.length();
+        for(int i = 0;i<n;i++)
+        {
+            s += (this.args.get(i)).toString();
+            if(i<n-1)
+                s += ",";
+        }
+        s += ")";
+        return s;
+    }
 }
