@@ -1,4 +1,4 @@
-import java.util.* ;
+import java.util.*;
 
 public class Parser 
 {
@@ -42,10 +42,11 @@ public class Parser
         {
             List<Expression> tail=new ArrayList<Expression>();
             List<String> ops=new ArrayList<String>();
+            String buffer="";
             int i=id1+2;
             while(i<input.length())
             {   
-                if((input.charAt(i))=='.')
+                if(input.charAt(i)=='.')
                 {
                     for(int j=i+1;i<input.length();j++)
                     {
@@ -54,60 +55,24 @@ public class Parser
                             // Raise Error
                         }
                     }
+                    break;
                 }
-                int id3=input.indexOf(",");
-                int id4=input.indexOf(";");
-                int id5=input.indexOf('.');
-                Expression current_arg;
-                if(id3==-1)
+                else if(input.charAt(i)==',' || input.charAt(i)==';')
                 {
-                    if(id4==-1)
-                    {
-                        // Last term
-                        String current_inp=input.substring(i,id5-i);
-                        current_arg=parse_term(current_inp);
-                        i=id5;
-                    }
-                    else
-                    {
-                        // or operator after term
-                        String current_inp=input.substring(i,id4-i);
-                        current_arg=parse_term(current_inp);
-                        ops.add(";");
-                        i=id4+1;
-                    }
+                    Expression tail_content=this.parse_term(buffer);
+                    tail.add(tail_content);
+                    String b;
+                    b+=input.charAt(i);
+                    ops.add(b);
+                    buffer="";
+                    i++;
+
                 }
-                else
+                else if(input.charAt(i)!=' ')
                 {
-                    if(id4==-1)
-                    {
-                        // and operator after term
-                        String current_inp=input.substring(i,id3-i);
-                        current_arg=parse_term(current_inp);
-                        ops.add(",");
-                        i=id3+1;
-                    }
-                    else
-                    {
-                        if(id3<id4)
-                        {
-                            // and operator after term
-                            String current_inp=input.substring(i,id3-i);
-                            current_arg=parse_term(current_inp);
-                            ops.add(",");
-                            i=id3+1;
-                        }
-                        else
-                        {
-                            // or operator after term
-                            String current_inp=input.substring(i,id4-i);
-                            current_arg=parse_term(current_inp);
-                            ops.add(";");
-                            i=id4+1;
-                        }
-                    }
+                    buffer+=input.charAt(i);
                 }
-                tail.add(current_arg);
+                
             }
             return new Rule(head,tail,ops);
         }
