@@ -8,8 +8,10 @@ public class Variable implements Expression
     {
         this.var=var;
     }
-    public toString()
+    @Override
+    public String toString()
     {
+        return this.var; 
         
     }
 }
