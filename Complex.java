@@ -13,10 +13,11 @@ public class Complex implements Expression
         this.args=new ArrayList<Expression>(args);
         this.arity=this.args.size();
     }
+    @Override
     public String toString()
     {
         String s = functor + "(";
-        int n = this.args.length();
+        int n = this.args.size();
         for(int i = 0;i<n;i++)
         {
             s += (this.args.get(i)).toString();

@@ -4,6 +4,21 @@ public class Parser
 {
     public Rule parse_rule(String input)
     {
+        String p="";  
+        int n=input.length();
+        int k=n;
+        for(int i=0;i<n;i++)
+        {
+            if(input.charAt(i)!=' ')
+                p+=input.charAt(i);
+            else
+            {
+                k--;
+            }
+
+        }
+        input=p; 
+        n=k;     
         Expression head=null;
         Integer id1=input.indexOf(":-");
         Integer id2=input.indexOf(".");
@@ -44,20 +59,10 @@ public class Parser
             List<String> ops=new ArrayList<String>();
             String buffer="";
             int i=id1+2;
-            while(i<input.length())
+            int op=0;
+            while(i<n)
             {   
                 if(input.charAt(i)=='.')
-                {
-                    for(int j=i+1;i<input.length();j++)
-                    {
-                        if((input.charAt(j))!=' ')
-                        {
-                            // Raise Error
-                        }
-                    }
-                    break;
-                }
-                else if(input.charAt(i)==',' || input.charAt(i)==';')
                 {
                     Expression tail_content=this.parse_term(buffer);
                     tail.add(tail_content);
@@ -65,35 +70,78 @@ public class Parser
                     b+=input.charAt(i);
                     ops.add(b);
                     buffer="";
-                    i++;
+                    for(int j=i+1;j<n;j++)
+                    {
+                        if((input.charAt(j))!=' ' || input.charAt(j)=='.')
+                        {
+                            // Raise Error
+                        }
+                    }
+                    break;
+                }
+                if(input.charAt(i)=='(')
+                    op++;
+                if(input.charAt(i)==')')
+                    op--;
+                buffer += input.charAt(i);
+                if((input.charAt(i)==',' || input.charAt(i)==';') && op==0)
+                {
+                    Expression tail_content=this.parse_term(buffer);
+                    tail.add(tail_content);
+                    String b="";
+                    b+=input.charAt(i);
+                    ops.add(b);
+                    buffer="";
 
                 }
-                else if(input.charAt(i)!=' ')
-                {
-                    buffer+=input.charAt(i);
-                }
+                
+                i++;
                 
             }
+
             return new Rule(head,tail,ops);
         }
     }
+    public Expression parse_query(String input)
+    {
+        int n=input.length();
+        
+        if(input.charAt(n-1)!='.')
+        {
+            //Raise Error.
+        }
+        
+        input=input.substring(0,n-1);
 
+
+        return parse_term(input);
+        
+
+
+    }
     public Expression parse_term(String input)
     {
-        
-        String p=" ";  
+        // System.out.println(input);
+        String p="";  
         int n=input.length();
+        int k=n;
         for(int i=0;i<n;i++)
         {
             if(input.charAt(i)!=' ')
                 p+=input.charAt(i);
+            else
+            {
+                k--;
+            }
 
         }
-        input=p;      
+        input=p; 
+        n=k;     
         int g =input.indexOf('(');
 
         if(g==-1)
         {
+            // System.out.println(input);
             if(Character.isUpperCase(input.charAt(0)))
             {
                 Variable x = new Variable(input);
@@ -122,11 +170,17 @@ public class Parser
             }
             List<Expression> arg=new ArrayList<Expression>();
             String buffer="";
-            for(int i=g+1;i<n;i++)
+            int op=0;
+            for(int i=g+1;i<n-1;i++)
             {
-                if(input.charAt(i)==',')
+                if(input.charAt(i)=='(')
+                    op++;
+                if(input.charAt(i)==')')
+                    op--;
+                if(input.charAt(i)==',' && op==0)
                 {
-                    arg.add(parse_term(buffer));
+                    if(buffer.equals("")==false)
+                        arg.add(parse_term(buffer));
                     buffer="";
                 }
                 else{
@@ -134,7 +188,10 @@ public class Parser
                 }
                                 
             }
-            arg.add(parse_term(buffer));
+            if(buffer.equals("")==false)
+            {
+                arg.add(parse_term(buffer));
+            }
             return new Complex(functor,arg);
         }
 
