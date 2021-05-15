@@ -14,4 +14,21 @@ public class Rule
         this.tail=tail;
         this.ops=ops;
     }
+    @Override
+    public String toString()
+    {
+        String str="";
+        str+=this.head.toString();
+        str+=" :-";
+        for(int i=0;i<this.tail.size()-1;i++)
+        {
+            str+=" ";
+            str+=this.tail.get(i).toString();
+            str+=" ";
+            str+=this.ops.get(i);
+        }
+        str+=" ";
+        str+=this.tail.get(tail.size()-1).toString();
+        return str;
+    }
 }
