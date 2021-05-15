@@ -77,4 +77,27 @@ public class Parser
             return new Rule(head,tail,ops);
         }
     }
+
+    public Expression parse_rule_term(String input)
+    {
+        int n=input.length();
+        int k=-1;
+        for(int i=0;i<n;i++)
+        {
+            if(input.charAt(i)==',' && k==-1)
+            {   
+                for(int j = i-1;j>=0;j--)
+                {
+                    
+                }
+                if(input.charAt(i-1)==')') //complex Term
+                {
+
+                }
+            }
+            
+        }
+
+        
+    }
 }
