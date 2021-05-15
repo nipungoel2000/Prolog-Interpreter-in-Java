@@ -4,10 +4,10 @@ public class Parser
 {
     public Rule parse_rule(String input)
     {
-        Expression head;
+        Expression head=null;
         Integer id1=input.indexOf(":-");
         Integer id2=input.indexOf(".");
-        Integer type;
+        Integer type=0;
         if(id2 == -1)
         {
             // Raise Error
@@ -61,7 +61,7 @@ public class Parser
                 {
                     Expression tail_content=this.parse_term(buffer);
                     tail.add(tail_content);
-                    String b;
+                    String b="";
                     b+=input.charAt(i);
                     ops.add(b);
                     buffer="";
@@ -78,26 +78,72 @@ public class Parser
         }
     }
 
-    public Expression parse_rule_term(String input)
+    public Expression parse_term(String input)
     {
+        
+        String p=" ";  
         int n=input.length();
-        int k=-1;
         for(int i=0;i<n;i++)
         {
-            if(input.charAt(i)==',' && k==-1)
-            {   
-                for(int j = i-1;j>=0;j--)
-                {
-                    
-                }
-                if(input.charAt(i-1)==')') //complex Term
-                {
+            if(input.charAt(i)!=' ')
+                p+=input.charAt(i);
 
-                }
+        }
+        input=p;      
+        int g =input.indexOf('(');
+
+        if(g==-1)
+        {
+            if(Character.isUpperCase(input.charAt(0)))
+            {
+                Variable x = new Variable(input);
+                return x;
             }
+            else
+            {
+                Constant c= new Constant(input);
+                return c;
+
+            }
+        }
+        else
+        {
+            if(input.charAt(n-1)!=')')
+            {
+                //Error.
+            }
+                
+            String functor="";
             
+            for(int i=0;i<g;i++)
+            {
+                functor+=input.charAt(i);
+                
+            }
+            List<Expression> arg=new ArrayList<Expression>();
+            String buffer="";
+            for(int i=g+1;i<n;i++)
+            {
+                if(input.charAt(i)==',')
+                {
+                    arg.add(parse_term(buffer));
+                    buffer="";
+                }
+                else{
+                    buffer+=input.charAt(i);
+                }
+                                
+            }
+            arg.add(parse_term(buffer));
+            return new Complex(functor,arg);
         }
 
-        
+
+            
+            
     }
+
+        
 }
+
+
