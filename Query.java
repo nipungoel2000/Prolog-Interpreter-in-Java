@@ -3,12 +3,12 @@ import java.util.*;
 public class Query{
 
     String query;
-    HashMap<String,Expression> map;
+    HashMap<String,Pair> map;
 
     public Query(String query)
     {
         this.query = query;
-        this.map = new HashMap<String,Expression>();
+        this.map = new HashMap<String,Pair>();
     }
     public void solve(String query)
     {
@@ -17,14 +17,22 @@ public class Query{
         if(id!=-1) //for unification
         {   
             Parser p = new Parser();
-            Expression e1 = p.parse_term(query.substring(0,id-1));
+            Expression e1 = p.parse_term(query.substring(0,id));
             Expression e2 = p.parse_term(query.substring(id+1));
             // System.out.println(e1.toString());
             // System.out.println(e2.toString());
             if(unify(e1,e2)==true)
-            {
+            {   
                 System.out.println("true");
-                printMap();
+                // if(validateMap())
+                // {
+                //     System.out.println("true");
+                //     printMap();
+                // }
+                // else
+                // {
+                //     System.out.println("false");
+                // }
             }
             else
             {
@@ -41,9 +49,10 @@ public class Query{
     {   
         // System.out.println(e1.toString()+e1.getClass());
         // System.out.println(e2.toString()+e2.getClass());
+
         if(e1.getClass() == Constant.class && e2.getClass() == Constant.class) //both terms are same atom or num
         {
-            if(e1.toString()==e2.toString())
+            if(e1.toString().equals(e2.toString()))
             {   
                 return true;
             }
@@ -52,44 +61,94 @@ public class Query{
                 return false;
             }
         }
+
         else if(e1.getClass() == Variable.class || e2.getClass() == Variable.class)
         {   
-            // if(e1.getClass() == Variable.class && e2.getClass() == Variable.class)
-            // {
-            //     if(map.containsKey(e1.toString()))
-            //     {
-            //         Expression e = map.get(e1.toString());
-            //         if(e.getClass() == Variable.class)
-            //         {
-            //             if(e.toString().equals(e2.toString()))
-            //         }
-            //     }
-            // }
             if(e1.getClass() == Variable.class)
             {
                 if(map.containsKey(e1.toString())) 
                 {   
                     // System.out.println("here");
-                    Expression e = map.get(e1.toString());
-                    return unify(e,e2);
+                    Pair pr = map.get(e1.toString());
+                    List<Expression> le = pr.getFirst();
+                    List<Variable> lv = pr.getSecond();
+                    if(e2.getClass() == Variable.class)
+                    {
+                        pr.addSecond((Variable)e2);
+                        return true;
+                    }
+                    else
+                    {
+                        int len = le.size();
+                        if(len>0) //len can be atmost 1
+                        {
+                            return unify(le.get(0),e2);     
+                        }
+                        else
+                        {   
+                            pr.addFirst(e2);
+                            return true;
+                        }
+                    }
                 }
                 else
-                {   
-                    // System.out.println("here");
-                    map.put(e1.toString(),e2);
+                {      
+                    List<Expression> le = new ArrayList<Expression>();
+                    List<Variable> lv = new ArrayList<Variable>();
+                    if(e2.getClass() == Variable.class)
+                    {
+                        lv.add((Variable)e2);
+                    }
+                    else
+                    {
+                        le.add(e2);
+                    }
+                    Pair pr= new Pair(le,lv);
+                    map.put(e1.toString(),pr);
                     return true;
                 }
             }
             else //e2 is variable
             {
                 if(map.containsKey(e2.toString())) 
-                {
-                    Expression e = map.get(e2.toString());
-                    return unify(e,e1);
+                {   
+                    // System.out.println("here");
+                    Pair pr = map.get(e2.toString());
+                    List<Expression> le = pr.getFirst();
+                    List<Variable> lv = pr.getSecond();
+                    if(e1.getClass() == Variable.class)
+                    {
+                        pr.addSecond((Variable)e1);
+                        return true;
+                    }
+                    else
+                    {
+                        int len = le.size();
+                        if(len>0) //len can be atmost 1
+                        {
+                            return unify(le.get(0),e1);     
+                        }
+                        else
+                        {   
+                            pr.addFirst(e1);
+                            return true;
+                        }
+                    }
                 }
                 else
-                {
-                    map.put(e2.toString(),e1);
+                {      
+                    List<Expression> le = new ArrayList<Expression>();
+                    List<Variable> lv = new ArrayList<Variable>();
+                    if(e1.getClass() == Variable.class)
+                    {
+                        lv.add((Variable)e1);
+                    }
+                    else
+                    {
+                        le.add(e1);
+                    }
+                    Pair pr= new Pair(le,lv);
+                    map.put(e2.toString(),pr);
                     return true;
                 }
             }
@@ -122,19 +181,25 @@ public class Query{
             }
         }
         else
-            return false;
-    }
-
-    public void printMap()
-    {
-        for(Map.Entry<String,Expression> e: map.entrySet())
         {
-            System.out.println(e.getKey()+" : "+e.getValue());
+            return false;
         }
     }
+    // public boolean validateMap()
+    // {
+
+    // }
+    // public void printMap()
+    // {
+    //     for(Map.Entry<String,Expression> e: map.entrySet())
+    //     {
+    //         System.out.println(e.getKey()+" : "+e.getValue());
+    //     }
+    // }
     public static void main(String[] args)
-    {
-        String test = "h(X,Y,g(X,Y)) = h(a,b,g(Y,X))";
+    {   
+        String test = "g(X,Y,Z,h(a,b))=g(A,B,C,h(a,a))";
+        // String test = "h(X,Y,g(X,Y)) = h(a,a,g(Y,X))";
         // String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
         Query q = new Query(test);
         q.solve(test);   
