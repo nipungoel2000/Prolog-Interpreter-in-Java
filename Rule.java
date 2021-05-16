@@ -35,10 +35,10 @@ public class Rule
 
     public static void main(String[] args)
     {
-        
-        String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
+        String test = "enemy(X,Y):-friend(X,Z),friend(Y,Z).";
+        // String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
         Parser p=new Parser();
-        Expression output = p.parse_query(test);
+        Rule output = p.parse_rule(test);
         System.out.println(output.toString());
 
         

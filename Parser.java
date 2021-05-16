@@ -32,7 +32,7 @@ public class Parser
             if(id1==-1)
             {
                 // fact
-                String input_term=input.substring(0,id2);  
+                String input_term=input.substring(0,id2);  //ALso check if id1 is the last non-empty character or not else raise an error.
                 head=this.parse_term(input_term);
                 type=0;
             }
@@ -66,9 +66,6 @@ public class Parser
                 {
                     Expression tail_content=this.parse_term(buffer);
                     tail.add(tail_content);
-                    String b="";
-                    b+=input.charAt(i);
-                    ops.add(b);
                     buffer="";
                     for(int j=i+1;j<n;j++)
                     {
@@ -83,22 +80,23 @@ public class Parser
                     op++;
                 if(input.charAt(i)==')')
                     op--;
-                buffer += input.charAt(i);
+                // System.out.println("buffer1"+buffer);
                 if((input.charAt(i)==',' || input.charAt(i)==';') && op==0)
-                {
+                {   
+                    // System.out.println("buf2"+buffer);
                     Expression tail_content=this.parse_term(buffer);
                     tail.add(tail_content);
                     String b="";
                     b+=input.charAt(i);
                     ops.add(b);
                     buffer="";
-
                 }
-                
+                else
+                {
+                    buffer += input.charAt(i);
+                }
                 i++;
-                
             }
-
             return new Rule(head,tail,ops);
         }
     }
@@ -121,7 +119,7 @@ public class Parser
     }
     public Expression parse_term(String input)
     {
-        // System.out.println(input);
+        System.out.println(input);
         String p="";  
         int n=input.length();
         int k=n;
@@ -133,7 +131,6 @@ public class Parser
             {
                 k--;
             }
-
         }
         input=p; 
         n=k;     
@@ -151,7 +148,6 @@ public class Parser
             {
                 Constant c= new Constant(input);
                 return c;
-
             }
         }
         else
@@ -193,14 +189,8 @@ public class Parser
                 arg.add(parse_term(buffer));
             }
             return new Complex(functor,arg);
-        }
-
-
-            
-            
+        }       
     }
-
-        
 }
 
 
