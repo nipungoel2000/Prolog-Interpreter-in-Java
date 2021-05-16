@@ -13,7 +13,7 @@ public class Complex implements Expression
         this.args=new ArrayList<Expression>(args);
         this.arity=this.args.size();
     }
-    
+
     @Override
     public String toString()
     {
@@ -27,5 +27,20 @@ public class Complex implements Expression
         }
         s += ")";
         return s;
+    }
+
+    public String getFunctor()
+    {
+        return this.functor;
+    }
+
+    public Integer getArity()
+    {
+        return this.arity;
+    }
+
+    public List<Expression> getArglist()
+    {
+        return this.args;
     }
 }
