@@ -200,28 +200,39 @@ public class Query{
                 {    
                     String v = q.poll();
                     visited.add(v);
-                    Pair pr = map.get(v);
-                    List<Expression> le = pr.getFirst();
-                    List<Variable> lv = pr.getSecond();
-                    int n = lv.size();
-                    if(le.size()>0)
+                    if(map.containsKey(v)==true)
                     {
-                        myset.add(le.get(0));
-                    }
-                    for(int i = 0;i<n;i++)
-                    {   
-                        if(visited.contains(lv.get(i))==false)
-                            q.add(lv.get(i));
+                        Pair pr = map.get(v);
+                        List<Expression> le = pr.getFirst();
+                        List<Variable> lv = pr.getSecond();
+                        int n = lv.size();
+                        if(le.size()>0)
+                        {
+                            myset.add(le.get(0));
+                        }
+                        for(int i = 0;i<n;i++)
+                        {   
+                            if(visited.contains(lv.get(i).toString())==false)
+                                q.add(lv.get(i).toString());
+                        }
                     }
                 }
-                Iterator i = myset.iterator();
-                Iterator j = myset.iterator();
-                
-
+                boolean flag = true;
+                for(Expression e1: myset)
+                {
+                    for(Expression e2:myset)
+                    {   
+                        if(e1.toString().equals(e2.toString())==false)
+                        {
+                            flag = unify(e1,e2);
+                            if(flag == false)
+                                return false;
+                        }
+                    }
+                }
             }
-
         }
-
+        return true;
     }
     // public void printMap()
     // {
@@ -232,8 +243,8 @@ public class Query{
     // }
     public static void main(String[] args)
     {   
-        String test = "g(X,Y,Z,h(a,b))=g(A,B,C,h(a,a))";
-        // String test = "h(X,Y,g(X,Y)) = h(a,a,g(Y,X))";
+        // String test = "g(X,Y,Z,h(a,a))=g(A,B,C,h(a,a))";
+        String test = "h(X,Y,g(X,Y)) = h(a,b,g(Y,X))";
         // String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
         Query q = new Query(test);
         q.solve(test);   
