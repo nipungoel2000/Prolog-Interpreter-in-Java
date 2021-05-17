@@ -23,16 +23,16 @@ public class Query{
             // System.out.println(e2.toString());
             if(unify(e1,e2)==true)
             {   
-                System.out.println("true");
-                // if(validateMap())
-                // {
-                //     System.out.println("true");
-                //     printMap();
-                // }
-                // else
-                // {
-                //     System.out.println("false");
-                // }
+                // System.out.println("true");
+                if(validateMap())
+                {
+                    System.out.println("true");
+                    // printMap();
+                }
+                else
+                {
+                    System.out.println("false");
+                }
             }
             else
             {
@@ -84,14 +84,14 @@ public class Query{
                         {
                             return unify(le.get(0),e2);     
                         }
-                        else
+                        else 
                         {   
                             pr.addFirst(e2);
                             return true;
                         }
                     }
                 }
-                else
+                else 
                 {      
                     List<Expression> le = new ArrayList<Expression>();
                     List<Variable> lv = new ArrayList<Variable>();
@@ -185,10 +185,44 @@ public class Query{
             return false;
         }
     }
-    // public boolean validateMap()
-    // {
+    public boolean validateMap()
+    {
+        Set<String> visited = new HashSet<String>();
+        for(Map.Entry elem : map.entrySet())
+        {   
+            String var = (String)elem.getKey();
+            if(visited.contains(var)==false)
+            {   
+                Set<Expression> myset = new HashSet<Expression>(); 
+                Queue<String> q = new LinkedList <>();
+                q.add(var);
+                while(q.peek()!=null)
+                {    
+                    String v = q.poll();
+                    visited.add(v);
+                    Pair pr = map.get(v);
+                    List<Expression> le = pr.getFirst();
+                    List<Variable> lv = pr.getSecond();
+                    int n = lv.size();
+                    if(le.size()>0)
+                    {
+                        myset.add(le.get(0));
+                    }
+                    for(int i = 0;i<n;i++)
+                    {   
+                        if(visited.contains(lv.get(i))==false)
+                            q.add(lv.get(i));
+                    }
+                }
+                Iterator i = myset.iterator();
+                Iterator j = myset.iterator();
+                
 
-    // }
+            }
+
+        }
+
+    }
     // public void printMap()
     // {
     //     for(Map.Entry<String,Expression> e: map.entrySet())
