@@ -18,7 +18,7 @@ public class Query{
         {   
             Parser p = new Parser();
             Expression e1 = p.parse_term(query.substring(0,id));
-            Expression e2 = p.parse_term(query.substring(id+1));
+            Expression e2 = p.parse_query(query.substring(id+1));
             // System.out.println(e1.toString());
             // System.out.println(e2.toString());
             if(unify(e1,e2)==true)
@@ -261,7 +261,7 @@ public class Query{
         // String test = "f(f(f(X)),Y)=f(Z,A)";
         // String test = "f(X,Y,Z) = f(X,h(c,Z),d)";
         // String test = "f(a,X)=g(Y,q(a,b))";
-        String test =  "g(a,b,c,d,a) = g(X,Y,Z,W,X)";
+        String test =  "g(a,b,c,d,a) = g(X,Y,Z,W,X).";
         // String test = "f(X,Y,a)= f(X,b,Z)";
         // String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
         Query q = new Query(test);
