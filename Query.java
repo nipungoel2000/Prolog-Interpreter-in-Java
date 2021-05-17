@@ -27,7 +27,7 @@ public class Query{
                 if(validateMap())
                 {
                     System.out.println("true");
-                    // printMap();
+                    printMap();
                 }
                 else
                 {
@@ -115,7 +115,6 @@ public class Query{
                     // System.out.println("here");
                     Pair pr = map.get(e2.toString());
                     List<Expression> le = pr.getFirst();
-                    List<Variable> lv = pr.getSecond();
                     if(e1.getClass() == Variable.class)
                     {
                         pr.addSecond((Variable)e1);
@@ -234,17 +233,36 @@ public class Query{
         }
         return true;
     }
-    // public void printMap()
-    // {
-    //     for(Map.Entry<String,Expression> e: map.entrySet())
-    //     {
-    //         System.out.println(e.getKey()+" : "+e.getValue());
-    //     }
-    // }
+    
+    public void printMap()
+    {
+        for(Map.Entry elem : map.entrySet())
+        {
+            String var = (String)elem.getKey();
+            // System.out.println("var="+var);
+
+            Variable p=new Variable(var);
+            HashSet<String> parents=new HashSet<String>();
+            // parents.add(var);
+            Expression term= p.get_substituted_binding(map,parents);
+            if(term==null)
+                System.out.println(var + " = " +var);
+            else
+                System.out.println(var + " = " +term.toString());
+
+        }
+           
+    }
     public static void main(String[] args)
     {   
         // String test = "g(X,Y,Z,h(a,a))=g(A,B,C,h(a,a))";
-        String test = "h(X,Y,g(X,Y)) = h(a,b,g(Y,X))";
+        // String test = "h(X,Y,g(X,Y)) = h(a,b,g(Y,X))";
+        // String test = "f(f(X),Y)=f(Z,A)";
+        // String test = "f(f(f(X)),Y)=f(Z,A)";
+        // String test = "f(X,Y,Z) = f(X,h(c,Z),d)";
+        // String test = "f(a,X)=g(Y,q(a,b))";
+        String test =  "g(a,b,c,d,a) = g(X,Y,Z,W,X)";
+        // String test = "f(X,Y,a)= f(X,b,Z)";
         // String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
         Query q = new Query(test);
         q.solve(test);   

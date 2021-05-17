@@ -1,5 +1,5 @@
 //Import other classes - Variable
-
+import java.util.*;
 public class Variable implements Expression
 {
     String var;
@@ -14,4 +14,56 @@ public class Variable implements Expression
         return this.var; 
         
     }
+    @Override
+    public Expression get_substituted_binding(HashMap<String,Pair> bindings,HashSet<String> parents)
+    {
+        
+        if(parents.contains(this.toString())==true)
+            return null;
+         
+        if(bindings.containsKey(this.toString())==false)
+            return this;
+        if(bindings.get(this.toString()).getFirst().size()==0)
+        {
+            if(bindings.get(this.toString()).getSecond().size()==0)
+                return this;
+            else
+                return bindings.get(this.toString()).getSecond().get(0);
+        }
+
+        Expression binded=bindings.get(this.toString()).getFirst().get(0);
+       
+        // System.out.println(binded.toString());
+        if(binded.getClass()==Constant.class)
+            return binded;
+        
+        else if(binded.getClass()==Variable.class)
+        {
+                  
+            parents.add(this.toString());
+            
+            Expression indirect_binding=binded.get_substituted_binding(bindings,parents);
+            if(indirect_binding==null)
+                return this;
+            else
+                return indirect_binding;
+            
+            
+        }
+        else
+        {
+            // System.out.println("Complex");
+            
+            parents.add(this.toString());
+            Expression indirect_binding=binded.get_substituted_binding(bindings,parents);
+            if(indirect_binding==null)
+                return this;
+            else
+                return indirect_binding;
+
+        }
+       
+        
+    }
+    
 }

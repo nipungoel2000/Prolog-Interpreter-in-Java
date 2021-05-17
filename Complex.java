@@ -29,6 +29,24 @@ public class Complex implements Expression
         return s;
     }
 
+    @Override
+    public Expression get_substituted_binding(HashMap<String,Pair> bindings,HashSet<String> parents)
+    {
+        for(int i=0;i<this.arity;i++)
+        {
+            // System.out.println(this.args.get(i).toString());
+           
+            Expression term=this.args.get(i).get_substituted_binding(bindings,parents);
+            if(term!=null)
+            {
+                this.args.set(i,term);
+            }
+           
+        }
+        return this;
+
+    }
+
     public String getFunctor()
     {
         return this.functor;

@@ -1,5 +1,5 @@
 //Import other classes - Variable
-
+import java.util.*;
 public class Constant implements Expression
 {
     String value;
@@ -12,5 +12,11 @@ public class Constant implements Expression
     public String toString()
     {
         return this.value;
+    }
+
+    @Override
+    public Expression get_substituted_binding(HashMap<String,Pair> bindings,HashSet<String> parents)
+    {
+        return this;
     }
 }
