@@ -32,7 +32,18 @@ public class Rule
         str+=this.tail.get(tail.size()-1).toString();
         return str;
     }
-
+    public Expression getHead()
+    {
+        return this.head;
+    }
+    public List<Expression> getTail()
+    {
+        return this.tail;
+    }
+    public List<String> getOps()
+    {
+        return this.ops;
+    }
     public static void main(String[] args)
     {
         String test = "enemy(X,Y):-friend(X,Z),friend(Y,Z).";

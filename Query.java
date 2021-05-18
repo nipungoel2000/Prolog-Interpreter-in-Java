@@ -4,19 +4,21 @@ public class Query{
 
     String query;
     HashMap<String,Pair> map;
+    List<Rule> kb;
 
-    public Query(String query)
+    public Query(String query,List<Rule> kb)
     {
         this.query = query;
         this.map = new HashMap<String,Pair>();
+        this.kb = kb;
     }
     public void solve(String query)
     {
         Integer id = query.indexOf("=");
         int n = query.length();
+        Parser p = new Parser();
         if(id!=-1) //for unification
         {   
-            Parser p = new Parser();
             Expression e1 = p.parse_term(query.substring(0,id));
             Expression e2 = p.parse_query(query.substring(id+1));
             // System.out.println(e1.toString());
@@ -35,13 +37,22 @@ public class Query{
                 }
             }
             else
-            {
+            {   
                 System.out.println("false");
             }
         }
         else //for proof search
-        {
-            System.out.println("Implement Proof Search");
+        {   
+            Expression e = p.parse_query(query);
+            if(proofSearch(e)==true)
+            {
+                System.out.println("true");
+                printMap();
+            }
+            else
+            {
+                System.out.println("false");
+            }
         }
     }
 
@@ -233,7 +244,6 @@ public class Query{
         }
         return true;
     }
-    
     public void printMap()
     {
         for(Map.Entry elem : map.entrySet())
@@ -249,23 +259,83 @@ public class Query{
                 System.out.println(var + " = " +var);
             else
                 System.out.println(var + " = " +term.toString());
-
         }
            
     }
-    public static void main(String[] args)
+
+    public boolean proofSearch(Expression e)
     {   
-        // String test = "g(X,Y,Z,h(a,a))=g(A,B,C,h(a,a))";
-        // String test = "h(X,Y,g(X,Y)) = h(a,b,g(Y,X))";
-        // String test = "f(f(X),Y)=f(Z,A)";
-        // String test = "f(f(f(X)),Y)=f(Z,A)";
-        // String test = "f(X,Y,Z) = f(X,h(c,Z),d)";
-        // String test = "f(a,X)=g(Y,q(a,b))";
-        String test =  "g(a,b,c,d,a) = g(X,Y,Z,W,X).";
-        // String test = "f(X,Y,a)= f(X,b,Z)";
-        // String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
-        Query q = new Query(test);
-        q.solve(test);   
+        int n = kb.size();
+        for(int i = 0;i<n;i++)
+        {   
+            HashMap<String,Pair> temp = map;
+            if(unify(kb.get(i).getHead(),e)==true && validateMap())
+            {   
+                HashSet<String> parents = new HashSet<String>();
+                // Expression expr = e.get_substituted_binding(map,parents);
+                List<Expression> tail = kb.get(i).getTail();
+                List<String> ops = kb.get(i).getOps();
+                int sz = tail.size();
+                boolean flag = true;
+                for(int j = 0;j<sz;j++)
+                {
+                    if(tail.get(j).getClass()==Constant.class) //fact
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if((j>0) && ops.get(j-1).equals(";") && flag == true) //query already true
+                        {
+                            return true;
+                        }
+                        Expression myexpr = tail.get(j).get_substituted_binding(map,parents);
+                        if(proofSearch(myexpr)==false)
+                        {     
+                            if((j>0) && ops.get(j-1).equals(","))
+                            {
+                                flag = false;
+                            }
+                        }
+                        else //true
+                        {
+                            if((j>0) && ops.get(j-1).equals(";"))
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+                }
+                if(flag==true)
+                {
+                    return true;
+                }
+                if(flag==false)
+                {
+                    map = temp;
+                }
+            }
+            else //restore global map
+            {
+                map = temp;
+            }
+        }
+        return false;
     }
+
+    // public static void main(String[] args)
+    // {   
+    //     // String test = "g(X,Y,Z,h(a,a))=g(A,B,C,h(a,a))";
+    //     // String test = "h(X,Y,g(X,Y)) = h(a,b,g(Y,X))";
+    //     // String test = "f(f(X),Y)=f(Z,A)";
+    //     // String test = "f(f(f(X)),Y)=f(Z,A)";
+    //     // String test = "f(X,Y,Z) = f(X,h(c,Z),d)";
+    //     // String test = "f(a,X)=g(Y,q(a,b))";
+    //     String test =  "g(a,b,c,d,a) = g(X,Y,Z,W,X).";
+    //     // String test = "f(X,Y,a)= f(X,b,Z)";
+    //     // String test = "friend(friend(X,Z),friend(Y,Z),X,Y,nipun,vinayak,friend(A,friend(B,friend(C,D)))).";
+    //     Query q = new Query(test);
+    //     q.solve(test);   
+    // }
 
 }
