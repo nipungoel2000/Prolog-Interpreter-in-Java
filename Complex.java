@@ -32,18 +32,21 @@ public class Complex implements Expression
     @Override
     public Expression get_substituted_binding(HashMap<String,Pair> bindings,HashSet<String> parents)
     {
+        
+        List<Expression> tail_copy=new ArrayList<Expression>();
         for(int i=0;i<this.arity;i++)
         {
-            // System.out.println(this.args.get(i).toString());
+            
            
-            Expression term=this.args.get(i).get_substituted_binding(bindings,parents);
+            tail_copy.add(this.args.get(i));
+            Expression term=tail_copy.get(i).get_substituted_binding(bindings,parents);
             if(term!=null)
             {
-                this.args.set(i,term);
+                tail_copy.set(i,term);
             }
            
         }
-        return this;
+        return new Complex(this.functor,tail_copy);
 
     }
 

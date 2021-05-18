@@ -16,7 +16,7 @@ public class Constant implements Expression
 
     @Override
     public Expression get_substituted_binding(HashMap<String,Pair> bindings,HashSet<String> parents)
-    {
-        return this;
+    {   
+        return new Constant(this.value);
     }
 }

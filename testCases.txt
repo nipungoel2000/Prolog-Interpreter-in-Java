@@ -1,0 +1,18 @@
+#For unification
+g(X,Y,Z,h(a,a))=g(A,B,C,h(a,a)).
+h(X,Y,g(X,Y))=h(a,b,g(Y,X)).
+h(X,Y,g(X,Y))=h(a,a,g(Y,X)).
+X=f(X).
+f(f(X),Y)=f(Z,A).
+f(f(f(X)),Y)=f(Z,A).
+f(X,Y,Z) = f(X,h(c,Z),d).
+f(a,X)=g(Y,q(a,b)).
+f(a,X)=f(Y,q(a,b)).
+g(a,b,c,d,a) = g(X,Y,Z,W,X).
+f(X,Y,a)= f(X,b,Z).
+
+
+
+#For proud.pl
+mother(X,Y).
+newborn(X).

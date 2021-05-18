@@ -22,11 +22,11 @@ public class Variable implements Expression
             return null;
          
         if(bindings.containsKey(this.toString())==false)
-            return this;
+            return new Variable(this.var);
         if(bindings.get(this.toString()).getFirst().size()==0)
         {
             if(bindings.get(this.toString()).getSecond().size()==0)
-                return this;
+                return new Variable(this.var);
             else
                 return bindings.get(this.toString()).getSecond().get(0);
         }
@@ -44,7 +44,7 @@ public class Variable implements Expression
             
             Expression indirect_binding=binded.get_substituted_binding(bindings,parents);
             if(indirect_binding==null)
-                return this;
+                return new Variable(this.var);
             else
                 return indirect_binding;
             
@@ -57,7 +57,7 @@ public class Variable implements Expression
             parents.add(this.toString());
             Expression indirect_binding=binded.get_substituted_binding(bindings,parents);
             if(indirect_binding==null)
-                return this;
+                return new Variable(this.var);
             else
                 return indirect_binding;
 
