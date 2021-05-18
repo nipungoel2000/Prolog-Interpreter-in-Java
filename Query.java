@@ -5,13 +5,13 @@ public class Query{
     String query;
     HashMap<String,Pair> map;
     List<Rule> kb;
-    HashSet<HashMap<String,Pair>> allbindings;
+    // HashSet<HashMap<String,Pair>> allbindings;
     public Query(String query,List<Rule> kb)
     {
         this.query = query;
         this.map = new HashMap<String,Pair>();
         this.kb = kb;
-        this.allbindings = new HashSet<HashMap<String,Pair>>();
+        // this.allbindings = new HashSet<HashMap<String,Pair>>();
     }
     public void solve()
     {
@@ -47,18 +47,11 @@ public class Query{
             Expression e1 = p.parse_query(query);
             Expression e2 = p.parse_query(query);
 
-            boolean ret = proofSearch(e1);
-            if(allbindings.size()>0)
+            if(proofSearch(e1))
             {
                 System.out.println("true.");
-                // printMap();
-                // System.out.println("yo");
-                
-                for(HashMap<String,Pair> mybinding : allbindings)
-                {
-                    HashSet<String> parents=new HashSet<String>();
-                    print_corr_binding(e1.get_substituted_binding(mybinding,parents),e2);
-                }
+                HashSet<String> parents=new HashSet<String>();
+                print_corr_binding(e1.get_substituted_binding(map,parents),e2);
                 // System.out.println(e.get_substituted_binding(map,parents));
             }
             else
@@ -304,6 +297,7 @@ public class Query{
         int n = kb.size();
         for(int i = 0;i<n;i++)
         {   
+            // System.out.println("i = "+i);
             HashMap<String,Pair> temp = new HashMap<String,Pair>();
             temp.putAll(map);
             if(unify(kb.get(i).getHead(),e)==true && validateMap())
@@ -320,45 +314,42 @@ public class Query{
                     if(tail.get(j).getClass()==Constant.class) //fact
                     {   
                         //Add True to List<Map> or add empty map to list
-                        // return true;
-                        // if(!map.isEmpty())
-                        // System.out.println("Check1");
-                        allbindings.add(map);
+                        return true;
+                        // allbindings.add(map);
                     }
                     else
-                    {
-                        HashMap<String,Pair> temp1 = new HashMap<String,Pair>();
-                        temp1.putAll(map);
+                    {   
                         Expression myexpr = tail.get(j).get_substituted_binding(map,parents);
                         if(proofSearch(myexpr)==false)
                         {     
-                            if((j>0) && ops.get(j-1).equals(","))
+                            if(j==0) flag = false;
+                            else if((j>0) && ops.get(j-1).equals(","))
                             {
                                 flag = false;
                             }
                         }
                         else //true
-                        {
-                            if((j>0) && ops.get(j-1).equals(";"))
+                        {   
+                            if(j==0) flag = true;
+                            else if((j>0) && ops.get(j-1).equals(";"))
                             {
                                 flag = true;
                             }
                         }
                         if((j>0) && ops.get(j-1).equals(";") && flag == true) //query already true
                         {   
-                            // System.out.println("Check2");
-                            allbindings.add(map);
-                            // return true;
-                            map = temp1;
+                            // allbindings.add(map);
+                            return true;
+                            // map = temp1;
                         }
                     }
                 }
+                // System.out.println("flag = " +flag);
                 if(flag==true)
                 {   
-                    // System.out.println("Check3");
-                    allbindings.add(map);
-                    map = temp;
-                    // return true;
+                    // allbindings.add(map);
+                    // map = temp;
+                    return true;
                 }
                 else if(flag==false)
                 {

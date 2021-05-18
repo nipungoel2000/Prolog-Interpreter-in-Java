@@ -1,4 +1,5 @@
 #For unification
+f(X,Y)=f(g(Y),knv).
 g(X,Y,Z,h(a,a))=g(A,B,C,h(a,a)).
 h(X,Y,g(X,Y))=h(a,b,g(Y,X)).
 h(X,Y,g(X,Y))=h(a,a,g(Y,X)).
@@ -10,9 +11,22 @@ f(a,X)=g(Y,q(a,b)).
 f(a,X)=f(Y,q(a,b)).
 g(a,b,c,d,a) = g(X,Y,Z,W,X).
 f(X,Y,a)= f(X,b,Z).
+f(mickey,mouse)=f(X,X).
+f(g(X,Y),X,Z)=f(Z,X,a).
+f(g(X,Y),X,W)=f(Z,X,Z).
 
-
-
-#For proud.pl
-mother(X,Y).
+#For proud
+parent(X,Y).
 newborn(X).
+proud(X).
+
+#For kb1
+loves(vincent,X).
+loves(X,Y).
+jealous(marsellus,W).
+jealous(X,Y).
+
+#For kb2
+happy(X).
+playsAirGuitar(vincent).
+playsAirGuitar(X).
