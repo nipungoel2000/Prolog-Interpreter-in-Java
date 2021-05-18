@@ -52,6 +52,8 @@ public class Main
         while(!input.equals("Exit"))
         {
             // do something
+            Query q = new Query(input,rules);
+            q.solve();
             System.out.println("");
             System.out.print("?- "); 
             input = myObj.nextLine();

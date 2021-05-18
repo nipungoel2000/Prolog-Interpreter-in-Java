@@ -12,15 +12,15 @@ public class Query{
         this.map = new HashMap<String,Pair>();
         this.kb = kb;
     }
-    public void solve(String query)
+    public void solve()
     {
-        Integer id = query.indexOf("=");
-        int n = query.length();
+        Integer id = this.query.indexOf("=");
+        int n = this.query.length();
         Parser p = new Parser();
         if(id!=-1) //for unification
         {   
-            Expression e1 = p.parse_term(query.substring(0,id));
-            Expression e2 = p.parse_query(query.substring(id+1));
+            Expression e1 = p.parse_term(this.query.substring(0,id));
+            Expression e2 = p.parse_query(this.query.substring(id+1));
             // System.out.println(e1.toString());
             // System.out.println(e2.toString());
             if(unify(e1,e2)==true)
