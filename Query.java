@@ -87,9 +87,6 @@ public class Query{
     
     public boolean unify(Expression e1, Expression e2)
     {   
-        // System.out.println(e1.toString()+e1.getClass());
-        // System.out.println(e2.toString()+e2.getClass());
-
         if(e1.getClass() == Constant.class && e2.getClass() == Constant.class) //both terms are same atom or num
         {
             if(e1.toString().equals(e2.toString()))
@@ -101,14 +98,12 @@ public class Query{
                 return false;
             }
         }
-
         else if(e1.getClass() == Variable.class || e2.getClass() == Variable.class)
         {   
             if(e1.getClass() == Variable.class)
             {
                 if(map.containsKey(e1.toString())) 
                 {   
-                    // System.out.println("here");
                     Pair pr = map.get(e1.toString());
                     List<Expression> le = pr.getFirst();
                     List<Variable> lv = pr.getSecond();
@@ -152,7 +147,6 @@ public class Query{
             {
                 if(map.containsKey(e2.toString())) 
                 {   
-                    // System.out.println("here");
                     Pair pr = map.get(e2.toString());
                     List<Expression> le = pr.getFirst();
                     if(e1.getClass() == Variable.class)
