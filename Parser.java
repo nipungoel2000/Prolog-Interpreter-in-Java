@@ -25,7 +25,7 @@ public class Parser
         Integer type=0;
         if(id2 == -1)
         {
-            // Raise Error
+            throw new java.lang.Error("Syntax error");
         }
         else
         {
@@ -71,7 +71,7 @@ public class Parser
                     {
                         if((input.charAt(j))!=' ' || input.charAt(j)=='.')
                         {
-                            // Raise Error
+                            throw new java.lang.Error("Syntax error");
                         }
                     }
                     break;
@@ -106,7 +106,7 @@ public class Parser
         
         if(input.charAt(n-1)!='.')
         {
-            //Raise Error.
+            throw new java.lang.Error("Syntax error");
         }
         
         input=input.substring(0,n-1);
@@ -149,7 +149,7 @@ public class Parser
         {
             if(input.charAt(n-1)!=')')
             {
-                //Error.
+                throw new java.lang.Error("Syntax error");
             }
                 
             String functor="";
