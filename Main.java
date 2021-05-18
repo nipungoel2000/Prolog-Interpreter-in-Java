@@ -5,7 +5,7 @@ public class Main
     public static void main(String[] args) throws FileNotFoundException
     {
         Scanner myObj = new Scanner(System.in);
-        System.out.println("Welcome to Kashif, Nipun and Vinayak - Prolog\nThis is free software.\nFor source code, visit https://github.com/vinayakagarwal12/Prolog-Interpreter-in-Java\n");
+        System.out.println("Welcome to KNV - Prolog ( version 1.1.0 )\nThis is free software developed by Kashif, Nipun and Vinayak.\nFor source code, visit https://github.com/vinayakagarwal12/Prolog-Interpreter-in-Java\n");
         List<Rule> rules=new ArrayList<Rule>();
         Parser p=new Parser();
         System.out.print("?- "); 
