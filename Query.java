@@ -35,7 +35,7 @@ public class Query{
                 {
                     System.out.println("false");
                 }
-            }
+            }   
             else
             {   
                 System.out.println("false");
@@ -43,11 +43,17 @@ public class Query{
         }
         else //for proof search
         {   
-            Expression e = p.parse_query(query);
-            if(proofSearch(e)==true)
+            Expression e1 = p.parse_query(query);
+            Expression e2 = p.parse_query(query);
+
+            if(proofSearch(e1)==true)
             {
-                System.out.println("true");
-                printMap();
+                System.out.println("true.");
+                // printMap();
+                // System.out.println("yo");
+                HashSet<String> parents=new HashSet<String>();
+                print_corr_binding(e1.get_substituted_binding(map,parents),e2);
+                // System.out.println(e.get_substituted_binding(map,parents));
             }
             else
             {
@@ -55,7 +61,31 @@ public class Query{
             }
         }
     }
+    public void print_corr_binding(Expression binded, Expression original)
+    {
+        Complex c1=(Complex)binded;
+        Complex c2=(Complex)original;
+        // System.out.println(c1.toString());
+        // System.out.println(c2.toString());
 
+
+        int n=c1.arity;
+        for(int i=0;i<n;i++)
+        {
+            // System.out.println(c2.args.get(i).toString());
+            
+            if(c2.args.get(i).getClass()==Variable.class)
+            {
+                System.out.println(c2.args.get(i).toString()+" = " + c1.args.get(i).toString());
+            }
+            else if(c2.args.get(i).getClass()==Complex.class)
+            {
+                print_corr_binding(c1.args.get(i),c2.args.get(i));
+            }
+        }
+
+    }
+    
     public boolean unify(Expression e1, Expression e2)
     {   
         // System.out.println(e1.toString()+e1.getClass());
