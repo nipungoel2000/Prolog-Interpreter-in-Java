@@ -103,7 +103,6 @@ public class Parser
     public Expression parse_query(String input)
     {
         int n=input.length();
-        
         if(input.charAt(n-1)!='.')
         {
             throw new java.lang.Error("Syntax error");
