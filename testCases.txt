@@ -1,4 +1,6 @@
 #For unification
+k(s(g),t(k))=k(X,t(Y)).
+k(s(g),Y)=k(X,t(k)).
 f(X,Y)=f(g(Y),knv).
 g(X,Y,Z,h(a,a))=g(A,B,C,h(a,a)).
 h(X,Y,g(X,Y))=h(a,b,g(Y,X)).
